@@ -46,12 +46,8 @@ func main(){
 		fmt.Println("请输入用户的密码:")
 		fmt.Scanln(&userPwd)
 		//把登录写到另一个文件
+		//这里需要从新调用
 		login(userId,userPwd)
-		/*if err != nil{
-			fmt.Println("登录失败")
-		}else {
-			fmt.Println("登录成功")
-		}*/
 	}else if key == 2 {
 		fmt.Println("进行用户注册的逻辑")
 	}

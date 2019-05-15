@@ -1,4 +1,4 @@
-package main
+package process
 
 import (
 	"chatroom/clinet/utils"
@@ -9,8 +9,13 @@ import (
 	"net"
 )
 
-// 写一个函数完成登录
-func login(userId int, userPwd string)(err error){
+type UserProcess struct {
+
+}
+
+
+// 关联用户登录的方法
+func (this *UserProcess) Login(userId int, userPwd string)(err error){
 	//1.连接到服务器
 	conn,err := net.Dial("tcp","127.0.0.1:8889")
 	if err != nil{
@@ -61,7 +66,10 @@ func login(userId int, userPwd string)(err error){
 		return
 	}
 	//处理服务器返回的消息
-	mes,err = utils.readPkg(conn) //mes就是
+	tf := &utils.Transfer{
+		Conn: conn,
+	}
+	mes,err = tf.ReadPkg() //mes就是
 	if err != nil{
 		fmt.Println("readPkg err=",err)
 		return
