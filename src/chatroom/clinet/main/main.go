@@ -1,6 +1,7 @@
 package main
 
 import (
+	"chatroom/clinet/process"
 	"fmt"
 	"os"
 	"time"
@@ -14,10 +15,8 @@ var userPwd string
 func main(){
 	// 接受用户选择
 	var key int
-	// 判断是否还继续显示菜单
-	var loop = true
 
-	for loop {
+	for true {
 		fmt.Println("------欢迎登陆多人聊天系统-----")
 		fmt.Println("\t\t\t 1.登陆聊天室")
 		fmt.Println("\t\t\t 2.注册用户")
@@ -27,10 +26,16 @@ func main(){
 		switch key {
 		case 1:
 			fmt.Println("登陆聊天室")
-			loop = false
+			fmt.Println("请输入用户的id:")
+			fmt.Scanln(&userId)
+			fmt.Println("请输入用户的密码:")
+			fmt.Scanln(&userPwd)
+			// 完成登录
+			// 1.创建一个UserProcess的实例
+			up := &process.UserProcess{}
+			up.Login(userId,userPwd)
 		case 2:
 			fmt.Println("注册用户")
-			loop = false
 		case 3:
 			fmt.Println("退出系统")
 			os.Exit(0)
@@ -39,17 +44,6 @@ func main(){
 		}
 	}
 	//根据用户的输入，显示新的提示信息
-	if key == 1 {
-		//说明用户要登陆
-		fmt.Println("请输入用户的id:")
-		fmt.Scanln(&userId)
-		fmt.Println("请输入用户的密码:")
-		fmt.Scanln(&userPwd)
-		//把登录写到另一个文件
-		//这里需要从新调用
-		login(userId,userPwd)
-	}else if key == 2 {
-		fmt.Println("进行用户注册的逻辑")
-	}
+
 	time.Sleep(time.Second * 5)
 }
