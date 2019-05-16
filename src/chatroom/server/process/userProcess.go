@@ -2,6 +2,7 @@ package process2
 
 import (
 	"chatroom/common/message"
+	"chatroom/server/models"
 	"chatroom/server/utils"
 	"encoding/json"
 	"fmt"
@@ -29,6 +30,17 @@ func (this *UserProcess)ServerProcessLogin(mes *message.Message)(err error){
 
 	//2.再声明一个LoginResMes，并完成赋值
 	var loginResMes message.LoginResMes
+
+	//使用model.MyuserDao 到redis去验证
+	user,err := models.MyUserDao.Login(loginMes.UserId,loginMes.UserPwd)
+	if err != nil{
+		loginResMes.Code = 500
+		loginResMes.Error = "还用户不存在，请注册再使用"
+		//这里我们先测试成功，然后我们可以根据返回具体错误信息
+	}else{
+		loginResMes.Code = 200
+		fmt.Println(user,"登录成功")
+	}
 
 	//如果用户的id = 100 密码 = 123456，认为是合法的，否则不合法
 	if loginMes.UserId == 100 && loginMes.UserPwd == "123456"{
