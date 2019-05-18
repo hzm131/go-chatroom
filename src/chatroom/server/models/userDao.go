@@ -29,12 +29,14 @@ func NewUserDao(pool *redis.Pool) (userDao *UserDao){
 //1.根据一个用户id，返回一个User实例+err
 func (this *UserDao) getUserById(conn redis.Conn,Id int)(user *User,err error){
 	//通过给定的id去redis查询这个用户
-	res,err := redis.String(conn.Do("hget","user",Id))
+	res,err := redis.String(conn.Do("hget","users",Id))
 	if err != nil{
 		//错误
 		if err == redis.ErrNil{ //表示在user hash中没有找到对应的id
 			err = ERROR_USER_NOTEXISTS
+			fmt.Println("用户不存在")
 		}
+		fmt.Println("内部错误")
 		return
 	}
 	user = &User{}
@@ -64,6 +66,7 @@ func (this *UserDao) Login(userId int,userPwd string)(user *User,err error){
 	//到这一步说明用户获取到了，然后就需要将从redis中取出的用户与用户发送的用户数据对比
 	if user.UserPwd != userPwd{
 		err = ERROR_USER_PWD
+		fmt.Println("密码错误")
 		return
 	}
 	return

@@ -34,8 +34,17 @@ func (this *UserProcess)ServerProcessLogin(mes *message.Message)(err error){
 	//使用model.MyuserDao 到redis去验证
 	user,err := models.MyUserDao.Login(loginMes.UserId,loginMes.UserPwd)
 	if err != nil{
-		loginResMes.Code = 500
-		loginResMes.Error = "还用户不存在，请注册再使用"
+
+		if err == models.ERROR_USER_NOTEXISTS{
+			loginResMes.Code = 500
+			loginResMes.Error = err.Error()
+		}else if err == models.ERROR_USER_PWD{
+			loginResMes.Code = 403
+			loginResMes.Error = err.Error()
+		}else {
+			loginResMes.Code = 505
+			loginResMes.Error = "服务器内部错误"
+		}
 		//这里我们先测试成功，然后我们可以根据返回具体错误信息
 	}else{
 		loginResMes.Code = 200
@@ -43,7 +52,7 @@ func (this *UserProcess)ServerProcessLogin(mes *message.Message)(err error){
 	}
 
 	//如果用户的id = 100 密码 = 123456，认为是合法的，否则不合法
-	if loginMes.UserId == 100 && loginMes.UserPwd == "123456"{
+	/*if loginMes.UserId == 100 && loginMes.UserPwd == "123456"{
 		//合法
 		loginResMes.Code = 200
 
@@ -51,7 +60,7 @@ func (this *UserProcess)ServerProcessLogin(mes *message.Message)(err error){
 		//不合法
 		loginResMes.Code = 500
 		loginResMes.Error = "该用户不存在，请注册再使用"
-	}
+	}*/
 	//3.将loginResMes序列化
 	data,err := json.Marshal(loginResMes)
 	if err != nil {

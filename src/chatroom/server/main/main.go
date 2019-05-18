@@ -40,15 +40,18 @@ func process(conn net.Conn){
 	}
 }
 
+func init(){
+	//当服务器启动时，我们就去初始化redis的连接池
+	initPool("127.0.0.1:6379",16,0,300*time.Second)
+	initUserDao()
+}
+
 //这里编写一个函数，完成UserDao初始化任务
 func initUserDao(){
 	models.MyUserDao = models.NewUserDao(pool)
 }
 
 func main()  {
-	//当服务器启动时，我们就去初始化redis的连接池
-	initPool("127.0.0.1:6379",16,0,300*time.Second)
-	initUserDao()
 	listen,err := net.Listen("tcp","127.0.0.1:8889")
 	defer listen.Close()
 	if err != nil {

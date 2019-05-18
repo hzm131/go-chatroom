@@ -12,6 +12,8 @@ import (
 var userId int
 var userPwd string
 
+
+
 func main(){
 	// 接受用户选择
 	var key int
