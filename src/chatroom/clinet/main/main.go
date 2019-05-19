@@ -11,7 +11,7 @@ import (
 //定义两个变量:一个表示用户id，一个表示用户密码
 var userId int
 var userPwd string
-
+var userName string
 
 
 func main(){
@@ -38,6 +38,15 @@ func main(){
 			up.Login(userId,userPwd)
 		case 2:
 			fmt.Println("注册用户")
+			fmt.Println("请输入用户id")
+			fmt.Scanf("%d\n",&userId)
+			fmt.Println("请输入用户密码")
+			fmt.Scanf("%s\n",&userPwd)
+			fmt.Println("请设置用户昵称")
+			fmt.Scanf("%s\n",&userName)
+			//调用userProcess，完成注册请求
+			up := process.UserProcess{}
+			up.Register(userId,userPwd,userName)
 		case 3:
 			fmt.Println("退出系统")
 			os.Exit(0)
