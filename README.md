@@ -17,4 +17,4 @@ server包  服务端
   models包  模型层，对数据库的增删改查
   utils包  server端工具包 封装一些工具方法，如读写操作
 
-common包  前后端通用的工具包
+common包  前后端通用的工具包.
