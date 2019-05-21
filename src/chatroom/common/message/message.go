@@ -21,6 +21,7 @@ type LoginMes struct {
 //响应
 type LoginResMes struct {
 	Code int `json:"code"`//状态码 500表示用户未注册 200成功
+	UsersId []int //增加字段，保存用户ud的切片
 	Error string `json:"error"`//返回错误信息
 }
 
