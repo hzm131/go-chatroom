@@ -12,6 +12,8 @@ import (
 
 type UserProcess struct {
 	Conn net.Conn
+	//增加一个字段，表示该Conn是哪个用户的
+	UserId int
 }
 
 func (this *UserProcess)ServerProcessRegister(mes *message.Message)(err error){
@@ -99,18 +101,11 @@ func (this *UserProcess)ServerProcessLogin(mes *message.Message)(err error){
 	}else{
 		loginResMes.Code = 200
 		fmt.Println(user,"登录成功")
+		//这里，因为用户登录成功，我们就把该登录成功的用户放入userMgr中
+		//将登录成功的用户的userId赋给this
+		this.UserId = loginMes.UserId
+		userMgr.AddOnlineUser(this)
 	}
-
-	//如果用户的id = 100 密码 = 123456，认为是合法的，否则不合法
-	/*if loginMes.UserId == 100 && loginMes.UserPwd == "123456"{
-		//合法
-		loginResMes.Code = 200
-
-	}else{
-		//不合法
-		loginResMes.Code = 500
-		loginResMes.Error = "该用户不存在，请注册再使用"
-	}*/
 	//3.将loginResMes序列化
 	data,err := json.Marshal(loginResMes)
 	if err != nil {
