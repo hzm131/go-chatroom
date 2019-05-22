@@ -5,7 +5,17 @@ const (
 	LoginResMesType = "LoginResMes"
 	RegisterMesType = "RegisterMes"
 	RegisterResMesType = "RegisterResMes"
+	NotifyUserStatusMesType = "NotifyUserStatusMes"
 )
+
+//定义几个用户状态的常量
+const(
+	UserOnLine = iota
+	UserOffLline
+	UserBusyStatus
+)
+
+
 
 type Message struct {
 	Type string `json:"type"`//消息类型
@@ -33,4 +43,10 @@ type RegisterMes struct {
 type RegisterResMes struct {
 	Code int `json:"code"` //返回状态码 400表示该用户已占用
 	Error string `json:"error"`
+}
+
+//为了配合服务器推送用户状态变化的消息
+type NotifyUserStatusMes struct {
+	UserId int `json:"userId"` //用户id
+	UserStatus int `json:"userStatus"` //用户状态
 }

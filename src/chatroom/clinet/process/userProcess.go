@@ -138,7 +138,17 @@ func (this *UserProcess) Login(userId int, userPwd string)(err error){
 		//登录成功后显示当前在线用户列表,遍历loginResMes.UsersId
 		fmt.Println("当前在线用户列表如下:")
 		for _,v := range loginResMes.UsersId{
+			//如果要求不显示自己在线
+			if v == userId{
+				continue
+			}
 			fmt.Println("用户id:\t",v)
+			//完成客户端的onlineUser的初始化
+			user := &message.User{
+				UserId:v,
+				UserStatus:message.UserOnLine,
+			}
+			onlineUser[v] = user
 		}
 		fmt.Print("\n\n")
 		//这里我们还需要在客户端启动一个协程
