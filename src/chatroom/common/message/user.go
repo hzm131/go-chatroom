@@ -6,4 +6,6 @@ type User struct {
 	UserPwd string `json:"userPwd"`
 	UserName string `json:"userName"`
 	UserStatus int `json:"userStatus"` //用户状态
+	//可以扩展
+	Sex string `json:"sex"` //性别
 }

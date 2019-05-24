@@ -1,11 +1,14 @@
 package process
 
 import (
+	"chatroom/clinet/models"
 	"chatroom/common/message"
 	"fmt"
 )
 
 var onlineUser map[int]*message.User = make(map[int]*message.User,100)
+
+var CurUser models.CurUser //在用户登录成功后完成对CurUser的初始化
 
 
 func outPutOnlineUser(){
